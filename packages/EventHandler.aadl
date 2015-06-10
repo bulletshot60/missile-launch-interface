@@ -16,8 +16,6 @@ public
 			assume "time in is greater than or equal to 0 ": time_in >= 0;
 			
 			guarantee "time out is greater than or equal to 0 ": time_out >= 0;
-			
-			guarantee "enabled or disabled": enabled = true or enabled = false;
 		**};
 	end toggle_event_thread;
 	
@@ -62,8 +60,6 @@ public
 			assume "time in is greater than or equal to 0 ": time_in >= 0;
 			
 			guarantee "time out is greater than or equal to 0 ": time_out >= 0;
-			
-			guarantee "enabled or disabled": enabled = true or enabled = false;
 		**};
 	end button_event_thread;
 	
@@ -109,8 +105,6 @@ public
 			assume "time in is greater than or equal to 0 ": time_in >= 0;
 			
 			guarantee "time out is greater than or equal to 0 ": time_out >= 0;
-			
-			guarantee "enabled or disabled": enabled = true or enabled = false;
 		**};
 	end toggle_event_handler;
 	
@@ -139,8 +133,6 @@ public
 			assume "time in is greater than or equal to 0 ": time_in >= 0;
 			
 			guarantee "time out is greater than or equal to 0 ": time_out >= 0;
-			
-			guarantee "enabled or disabled": enabled = true or enabled = false;
 		**};
 	end button_event_handler;
 	
@@ -188,11 +180,6 @@ public
 			guarantee "left_button_enabled_at is greater than or equal to 0 ": left_button_enabled_at >= 0;
 			guarantee "right_button_enabled_at is greater than or equal to 0 ": right_button_enabled_at >= 0;
 			guarantee "right_toggle_enabled_at is greater than or equal to 0 ": right_toggle_enabled_at >= 0;
-			
-			guarantee "left_toggle enabled or disabled": left_toggle_enabled = true or left_toggle_enabled = false;
-			guarantee "left_button enabled or disabled": left_button_enabled = true or left_button_enabled = false;
-			guarantee "right_button enabled or disabled": right_button_enabled = true or right_button_enabled = false;
-			guarantee "right_toggle enabled or disabled": right_toggle_enabled = true or right_toggle_enabled = false;
 		**};
 	end event_handler;
 	
@@ -223,32 +210,6 @@ public
 			output6: port right_toggle_handler.time_out->right_toggle_enabled_at;
 			output7: port left_button_handler.time_out->left_button_enabled_at;
 			output8: port right_button_handler.time_out->right_button_enabled_at;
-		annex BLESS {**
-			invariant
-				<<time_in >= 0>>
-			variables
-				left_toggle_is_enabled: Base_Types::Boolean;
-				right_toggle_is_enabled: Base_Types::Boolean;
-				left_button_is_enabled: Base_Types::Boolean;
-				right_button_is_enabled: Base_Types::Boolean;
-				left_toggle_was_enabled_at: Base_Types::Integer;
-				right_toggle_was_enabled_at: Base_Types::Integer;
-				left_button_was_enabled_at: Base_Types::Integer;
-				right_button_was_enabled_at: Base_Types::Integer;
-			states
-				start: initial state;
-				standby: complete state;
-			transitions
-				start-[]->standby { left_toggle_is_enabled := false; right_toggle_is_enabled := false; left_button_is_enabled := false; right_button_is_enabled := false; left_toggle_was_enabled_at := 0; right_toggle_was_enabled_at := 0; left_button_was_enabled_at := 0; right_button_was_enabled_at := 0 };
-				standby-[on dispatch left_toggle_up]->standby { left_toggle_is_enabled := true; left_toggle_was_enabled_at := time_in; left_toggle_enabled_at := left_toggle_was_enabled_at; left_toggle_enabled := left_toggle_is_enabled };
-				standby-[on dispatch left_toggle_down]->standby { left_toggle_is_enabled := false; left_toggle_was_enabled_at := 0; left_toggle_enabled_at := left_toggle_was_enabled_at; left_toggle_enabled := left_toggle_is_enabled };
-				standby-[on dispatch left_button_down]->standby { left_button_is_enabled := true; left_button_was_enabled_at := time_in; left_button_enabled_at := left_button_was_enabled_at; left_button_enabled := left_button_is_enabled };
-				standby-[on dispatch left_button_up]->standby { left_button_is_enabled := false; left_button_was_enabled_at := 0; left_button_enabled_at := left_button_was_enabled_at; left_button_enabled := left_button_is_enabled };
-				standby-[on dispatch right_button_down]->standby { right_button_is_enabled := true; right_button_was_enabled_at := time_in; right_button_enabled_at := right_button_was_enabled_at; right_button_enabled := right_button_is_enabled };
-				standby-[on dispatch right_button_up]->standby { right_button_is_enabled := false; right_button_was_enabled_at := 0; right_button_enabled_at := right_button_was_enabled_at; right_button_enabled := right_button_is_enabled };
-				standby-[on dispatch right_toggle_up]->standby { right_toggle_is_enabled := true; right_toggle_was_enabled_at := time_in; right_toggle_enabled_at := right_toggle_was_enabled_at; right_toggle_enabled := right_toggle_is_enabled };
-				standby-[on dispatch right_toggle_down]->standby { right_toggle_is_enabled := false; right_toggle_was_enabled_at := 0; right_toggle_enabled_at := right_toggle_was_enabled_at; right_toggle_enabled := right_toggle_is_enabled };
-		**};
 		annex agree {**
 			lift left_button_handler;
 			lift right_button_handler;

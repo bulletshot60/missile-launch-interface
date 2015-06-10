@@ -18,6 +18,23 @@ public
 				union({self}, collect_threads(subcomponents(self)))
 			else
 				collect_threads(subcomponents(self))
+				
+		Req2(self : component) <= **"all devices with specify connected to type"**
+			let devices: {component} = collect_devices({self});
+			forall(d : devices) .
+				device_has_must_be_connected_to(d)
+		
+		device_has_must_be_connected_to(d : component) <= **"device " d " has must be connected to"**
+			has_property(d, Custom_Device_Properties::Must_Be_Connected_To)
+		
+		collect_devices(self : {component}) : {component} =
+			{t for (c : self) (t : collect_device(c))}
+		
+		collect_device(self : component) : {component} =
+			if self instanceof device then
+				union({self}, collect_devices(subcomponents(self)))
+			else
+				collect_devices(subcomponents(self))
 		
 		instantiation_is_reachable(source_component : component, destination_components : {component}) <= **"proves that component" source_component " can reach component " destination_components**
 			exists (c : reachable({source_component})) .
