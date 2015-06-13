@@ -1,6 +1,6 @@
 package Devices
 public
-	with ResoluteHelpers, EventHandler, Custom_Device_Properties;
+	with ResoluteHelpers, Custom_Device_Properties;
 
 	device toggle_switch
 		features
@@ -9,17 +9,14 @@ public
 		flows
 			flow1: flow source toggled_up;
 			flow2: flow source toggled_down;
-		properties
-			Custom_Device_Properties::Must_Be_Connected_To => classifier(EventHandler::toggle_event_thread.impl);
 	end toggle_switch;
 	
 	device implementation toggle_switch.impl
 		flows
 			flow1: flow source toggled_up;
 			flow2: flow source toggled_down;
-		annex Resolute {**
-			prove(instantiation_is_reachable(this, instances(EventHandler::toggle_event_thread)))
-		**};
+		properties
+			Custom_Device_Properties::Must_Be_Connected_To => "toggle_event_thread.impl";
 	end toggle_switch.impl;
 	
 	device button
@@ -35,9 +32,8 @@ public
 		flows
 			flow1: flow source pressed;
 			flow2: flow source released;
-		annex Resolute {**
-			prove(instantiation_is_reachable(this, instances(EventHandler::button_event_thread)))
-		**};
+		properties
+			Custom_Device_Properties::Must_Be_Connected_To => "button_event_thread.impl";
 	end button.impl;
 	
 	device timer
@@ -50,5 +46,7 @@ public
 	device implementation timer.impl
 		flows
 			flow1: flow source fire;
+		properties
+			Custom_Device_Properties::Must_Be_Connected_To => "clock_thread.impl";
 	end timer.impl;
 end Devices;

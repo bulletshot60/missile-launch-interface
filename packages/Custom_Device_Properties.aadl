@@ -1,4 +1,4 @@
 property set Custom_Device_Properties is
 	with AADL_Project;
-	Must_Be_Connected_To : classifier (thread) applies to (device);	
+	Must_Be_Connected_To : aadlstring applies to (device);	
 end Custom_Device_Properties;

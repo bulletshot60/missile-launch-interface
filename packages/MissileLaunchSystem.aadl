@@ -84,6 +84,7 @@ public
 		annex Resolute {**
 			prove(Req1(this))
 			prove(Req2(this))
+			prove(Req3(this))
 		**};
 	end missile_launch_interface.impl;
 	

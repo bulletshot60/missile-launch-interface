@@ -36,10 +36,15 @@ public
 			else
 				collect_devices(subcomponents(self))
 		
-		instantiation_is_reachable(source_component : component, destination_components : {component}) <= **"proves that component" source_component " can reach component " destination_components**
-			exists (c : reachable({source_component})) .
-				exists (d : destination_components) .
-					c = d
+		Req3(self : component) <= **"all devices with must be connected to type specified"**
+			let devices: {component} = collect_devices({self});
+			forall(d : devices) .
+				device_is_connected_to(d, name(type(d)), property(d, Custom_Device_Properties::Must_Be_Connected_To))
+		
+		device_is_connected_to(d : component, d_name : string, t : string) <= **"device " d_name " is conntected to type " t**
+			let my_connected_components : {component} = reachable({d});
+			exists(c : my_connected_components) .
+				t = name(type(c))
 			
 		reachable(c : {component}) : {component} =
 			let next : {component} = union(c, next_reachable(c));
@@ -62,6 +67,7 @@ public
 					{}
 			else
 				{}
+			
 	**};
 	
 end ResoluteHelpers;
